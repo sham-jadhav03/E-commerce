@@ -37,10 +37,10 @@ const Login = () => {
           style={{ backgroundColor: "#1a1a1a" }}
         >
           <img
-            src="/snitch_editorial.png"
+            src="/login_editorial.png"
             alt="Snitch Fashion Editorial"
             className="absolute inset-0 w-full h-full object-cover object-top"
-            style={{ filter: "brightness(0.97)" }}
+            style={{ filter: "brightness(0.85)" }}
           />
           {/* Subtle warm overlay */}
           <div
@@ -83,10 +83,9 @@ const Login = () => {
           </div>
         </div>
 
-        {/* ── RIGHT: Form Panel ── */}
         <div
-          className="w-full lg:w-1/2 flex items-center justify-center min-h-screen lg:min-h-0 lg:h-full px-8 sm:px-14 lg:px-20 py-16 overflow-y-auto"
-          style={{ backgroundColor: "#121212" }}
+          className="w-full lg:w-1/2 flex items-center justify-center min-h-screen lg:min-h-0 lg:h-full px-8 sm:px-14 lg:px-20 py-16 overflow-y-auto [&::-webkit-scrollbar]:hidden"
+          style={{ backgroundColor: "#121212", scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           <div className="w-full max-w-sm">
             {/* Mobile brand mark */}

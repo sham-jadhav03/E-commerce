@@ -57,10 +57,10 @@ const Register = () => {
           style={{ backgroundColor: "#1a1a1a" }}
         >
           <img
-            src="snitch_editorial (1).png"
+            src="/register_editorial.png"
             alt="Snitch Fashion Editorial"
             className="absolute inset-0 w-full h-full object-cover object-top"
-            style={{ filter: "brightness(0.97)" }}
+            style={{ filter: "brightness(0.85)" }}
           />
           <div
             className="absolute inset-0"
@@ -101,8 +101,8 @@ const Register = () => {
 
         {/* ── RIGHT: Form Panel ── */}
         <div
-          className="w-full lg:w-1/2 flex items-center justify-center min-h-screen lg:min-h-0 lg:h-full px-8 sm:px-14 lg:px-20 py-16 overflow-y-auto"
-          style={{ backgroundColor: "#121212" }}
+          className="w-full lg:w-1/2 flex items-center justify-center min-h-screen lg:min-h-0 lg:h-full px-8 sm:px-14 lg:px-20 py-16 overflow-y-auto [&::-webkit-scrollbar]:hidden"
+          style={{ backgroundColor: "#121212", scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           <div className="w-full max-w-sm">
             {/* Mobile brand mark */}
@@ -119,9 +119,9 @@ const Register = () => {
             </div>
 
             {/* Header */}
-            <div className="mb-12">
+            <div className="mb-1 mt-4 w-full">
               <p
-                className="text-[10px] uppercase tracking-[0.22em] mb-4 font-medium"
+                className="text-[10px] uppercase tracking-[0.22em] mb-6 font-medium"
                 style={{ color: "#C9A96E" }}
               >
                 Welcome to Snitch
