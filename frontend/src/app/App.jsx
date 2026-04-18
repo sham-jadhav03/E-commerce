@@ -1,13 +1,14 @@
-import './index.css'
+import { RouterProvider } from "react-router";
+import { routes } from "./routes/AppRoutes";
+import "./index.css";
 
 function App() {
-  
-
   return (
     <>
-   <h1 className='bg-amber-200'>hello</h1>
+      <RouterProvider router={routes} />
+     
     </>
-  )
+  );
 }
 
-export default App
+export default App;

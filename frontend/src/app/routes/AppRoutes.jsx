@@ -2,10 +2,10 @@ import { createBrowserRouter } from "react-router";
 import Register from "../../features/pages/Register";
 import Login from "../../features/pages/Login";
 
-const routes = createBrowserRouter([
+export const routes = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element:  <h1 className="bg-amber-200">hello world</h1>,
   },
   {
     path: "/register",
