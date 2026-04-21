@@ -54,6 +54,9 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     const {email, password} = req.body;
 
+    console.log(req.body);
+    
+
     const user = await userModel.findOne({email});
 
     if(!user){
@@ -62,7 +65,7 @@ export const login = async (req, res) => {
         })
     }
 
-    const isMatch = await user.comparePassword(passsword);
+    const isMatch = await user.comparePassword(password);
 
     if(!isMatch){
         return res.status(400).json({
