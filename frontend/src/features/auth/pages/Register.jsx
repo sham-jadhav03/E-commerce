@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import ContinueWithGoogle from "../components/ContinueWithGoogle";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 const Register = () => {
+
+  const { handleRegister } = useAuth()
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -18,9 +23,17 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
+    await handleRegister({
+      email: formData.email,
+      fullname: formData.fullName,
+      contactNumber: formData.contactNumber,
+      password: formData.password,
+      isSeller: formData.isSeller
+    })
+    navigate("/");
   };
 
   const inputStyle = {

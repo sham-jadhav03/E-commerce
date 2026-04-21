@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import ContinueWithGoogle from "../components/ContinueWithGoogle";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 const Login = () => {
+  const { handleLogin } = useAuth();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -12,8 +17,14 @@ const Login = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    await handleLogin({
+      email: formData.email,
+      password: formData.password,
+    });
+    navigate("/");
   };
 
   return (
@@ -85,7 +96,11 @@ const Login = () => {
 
         <div
           className="w-full lg:w-1/2 flex items-center justify-center min-h-screen lg:min-h-0 lg:h-full px-8 sm:px-14 lg:px-20 py-16 overflow-y-auto [&::-webkit-scrollbar]:hidden"
-          style={{ backgroundColor: "#121212", scrollbarWidth: "none", msOverflowStyle: "none" }}
+          style={{
+            backgroundColor: "#121212",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
         >
           <div className="w-full max-w-sm">
             {/* Mobile brand mark */}
@@ -196,7 +211,7 @@ const Login = () => {
               {/* Sign In Button */}
               <button
                 type="submit"
-                className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300 mt-2"
+                className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300 mt-2 cursor-pointer"
                 style={{
                   backgroundColor: "#C9A96E",
                   color: "#121212",
