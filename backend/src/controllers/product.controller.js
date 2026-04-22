@@ -11,7 +11,7 @@ export const createProduct = async (req, res) => {
     req.files.map(async (file) => {
       return await uploadFiles({
         buffer: file.buffer,
-        filename: file.originalname,
+        fileName: file.originalname,
       });
     }),
   );
@@ -35,3 +35,15 @@ export const createProduct = async (req, res) => {
     product,
   });
 };
+
+export const getSellerProducts = async (req, res) => {
+  const seller = req.user;
+
+  const products = await productModel.find({seller: seller._id});
+
+  return res.status(200).json({
+    message: "Products fetched successfully",
+    success: true,
+    products,
+  })
+}

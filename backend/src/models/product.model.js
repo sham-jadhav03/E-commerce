@@ -16,7 +16,7 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     price: {
-      Amount: {
+      amount: {
         type: Number,
         required: true,
       },
@@ -26,12 +26,14 @@ const productSchema = new mongoose.Schema(
         default: "INR",
       },
     },
-    Images: {
-      url: {
-        type: String,
-        required: true,
+    images: [
+      {
+        url: {
+          type: String,
+          required: true,
+        },
       },
-    },
+    ],
   },
   { timestamps: true },
 );

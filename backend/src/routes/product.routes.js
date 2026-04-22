@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { createProduct } from "../controllers/product.controller.js";
+import { createProduct, getSellerProducts } from "../controllers/product.controller.js";
 import { validateCreateProduct } from "../validators/product.validator.js";
 import { autheticateSeller } from "../middleware/auth.middleware.js";
 
@@ -12,18 +12,25 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // Limit file size to 5MB
 });
 
-/*
-    @route POST /api/products
-    discription: Create a new product (only for authenticated sellers)
-    @access Private (Seller)
-*/
+/**
+ * @route POST /api/products
+ * @description Create a new product (only for authenticated sellers)
+ * @access Private (Seller only)
+ */
 
 router.post(
   "/",
   autheticateSeller,
-  validateCreateProduct,
   upload.array("image", 7),
+  validateCreateProduct,
   createProduct,
 );
+
+/**
+ * @route GET /api/products/seller
+ * @description Get all products of the authenticated seller
+ * @access Private (Seller only)
+ */
+router.get("/seller", autheticateSeller, getSellerProducts);
 
 export default router;
