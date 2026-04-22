@@ -1,8 +1,9 @@
 import cookieParser from "cookie-parser";
 import express from "express";
 import morgan from "morgan";
-import authRouter from "./routes/auth.routes.js";
 import Cors from "cors";
+import authRouter from "./routes/auth.routes.js";
+import productRouter from "./routes/product.routes.js";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(
 );
 
 app.use("/api/auth", authRouter);
+app.use("/api/products", productRouter);
 
 app.get("/", (req, res) => {
   res.send("hello from e-commerce");
