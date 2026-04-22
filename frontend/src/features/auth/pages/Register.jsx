@@ -28,8 +28,8 @@ const Register = () => {
     console.log(formData);
     await handleRegister({
       email: formData.email,
-      fullname: formData.fullName,
-      contactNumber: formData.contactNumber,
+      fullName: formData.fullName,
+      contact: formData.contactNumber,
       password: formData.password,
       isSeller: formData.isSeller
     })
@@ -300,7 +300,7 @@ const Register = () => {
               {/* Sign Up Button */}
               <button
                 type="submit"
-                className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300 mt-2"
+                className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300 mt-2 cursor-pointer"
                 style={{
                   backgroundColor: "#C9A96E",
                   color: "#121212",

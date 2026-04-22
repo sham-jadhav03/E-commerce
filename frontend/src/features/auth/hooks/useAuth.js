@@ -9,14 +9,29 @@ export const useAuth = () => {
     email,
     password,
     contact,
-    fullname,
+    fullName,
     isSeller = false,
   }) {
-    const data = await register(email, password, contact, fullname, isSeller);
+    try {
+      dispatch(setLoading(true));
+      const data = await register({
+        email,
+        password,
+        contact,
+        fullName,
+        isSeller,
+      });
 
-    dispatch(setUser(data.user));
-
-    return data.user;
+      dispatch(setUser(data.user));
+      return data.user;
+    } catch (error) {
+       console.log("Backend error:", error.response?.data);
+      dispatch(
+        setError(error.response?.data?.message || "Registration failed"),
+      );
+    } finally {
+      dispatch(setLoading(false));
+    }
   }
 
   async function handleLogin({ email, password }) {
