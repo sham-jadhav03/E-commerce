@@ -45,7 +45,7 @@ export const register = async (req, res) => {
     contact,
     password,
     fullName,
-    role: isSeller == true ? "seller" : "buyer",
+    role: isSeller ? "seller" : "buyer",
   });
 
   await sendTokenResponse(user, res, "User registered successfully");
@@ -71,4 +71,20 @@ export const login = async (req, res) => {
   }
 
   await sendTokenResponse(user, res, "User logged in successfully");
+};
+
+export const getMe = async (req, res) => {
+  const user = req.user;
+
+  res.status(200).json({
+    message: "User fetched successfully",
+    user: {
+      id: user._id,
+      name: user.name,
+      contact: user.contact,
+      email: user.email,
+      fullName: user.fullName,
+      role: user.role,
+    },
+  });
 };

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://localhost:3000",
-  withCredentials: true
+  withCredentials: true,
 });
 
 export async function register({
@@ -28,6 +28,12 @@ export async function login({ email, password }) {
     email,
     password,
   });
+
+  return response.data;
+}
+
+export async function getMe() {
+  const response = await api.get();
 
   return response.data;
 }

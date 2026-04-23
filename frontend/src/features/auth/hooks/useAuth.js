@@ -1,5 +1,5 @@
 import { setError, setLoading, setUser } from "../state/auth.slice";
-import { register, login } from "../services/auth.api";
+import { register, login, getMe } from "../services/auth.api";
 import { useDispatch } from "react-redux";
 
 export const useAuth = () => {
@@ -25,7 +25,7 @@ export const useAuth = () => {
       dispatch(setUser(data.user));
       return data.user;
     } catch (error) {
-       console.log("Backend error:", error.response?.data);
+      console.log("Backend error:", error.response?.data);
       dispatch(
         setError(error.response?.data?.message || "Registration failed"),
       );
@@ -40,5 +40,17 @@ export const useAuth = () => {
     return data.user;
   }
 
-  return { handleRegister, handleLogin };
+  async function handleGetMe() {
+    try {
+      dispatch(setLoading(true));
+      const data = await getMe();
+      dispatch(setUser(data.user));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+
+  return { handleRegister, handleLogin, handleGetMe };
 };

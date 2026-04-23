@@ -6,15 +6,15 @@ export const useProduct = () => {
   const disPatch = useDispatch();
 
   async function handleCreateProduct(formdata) {
-    const data = await createProduct({ formdata });
+    const data = await createProduct(formdata);
     return data.products;
   }
 
-  async function handleGetProducts() {
+  async function handleGetSellerProduct() {
     const data = await getProducts();
     disPatch(setSellerProducts(data.products));
     return data.products;
   }
 
-  return { handleCreateProduct, handleGetProducts };
+  return { handleCreateProduct, handleGetSellerProduct };
 };
