@@ -5,8 +5,6 @@ export const createProduct = async (req, res) => {
   const { title, description, priceAmount, priceCurrency } = req.body;
   const seller = req.user;
 
-  console.log(req.body);
-
   const images = await Promise.all(
     req.files.map(async (file) => {
       return await uploadFiles({
@@ -15,8 +13,6 @@ export const createProduct = async (req, res) => {
       });
     }),
   );
-
-  console.log(images);
 
   const product = await productModel.create({
     title,
@@ -39,11 +35,21 @@ export const createProduct = async (req, res) => {
 export const getSellerProducts = async (req, res) => {
   const seller = req.user;
 
-  const products = await productModel.find({seller: seller._id});
+  const products = await productModel.find({ seller: seller._id });
 
   return res.status(200).json({
     message: "Products fetched successfully",
     success: true,
     products,
-  })
-}
+  });
+};
+
+export const getAllProducts = async (req, res) => {
+  const products = await productModel.find();
+
+  res.status(200).json({
+    message: "All product fetched successfully",
+    success: true,
+    products,
+  });
+};

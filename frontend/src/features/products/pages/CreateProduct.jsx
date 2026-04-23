@@ -80,6 +80,9 @@ const CreateProduct = () => {
       images.forEach((img) => data.append("images", img.file));
       await handleCreateProduct(data);
       navigate("/");
+
+      console.log(data);
+      
     } catch (err) {
       console.error("Failed to create product", err);
     } finally {
