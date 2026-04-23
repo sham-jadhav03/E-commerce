@@ -40,4 +40,11 @@ router.get("/seller", autheticateSeller, getSellerProducts);
  */
 router.get("/", getAllProducts)
 
+/**
+ * @route GET /api/products/detail/:id
+ * @description Get product details by ID
+ * @access Public
+ */
+router.get("/detail/:id", getAllProducts)
+
 export default router;

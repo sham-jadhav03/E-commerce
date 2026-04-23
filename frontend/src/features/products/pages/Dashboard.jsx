@@ -73,7 +73,7 @@ const Dashboard = () => {
 
             <button
               onClick={() => navigate("/seller/create-product")}
-              className="py-4 px-8 text-[11px] uppercase tracking-[0.3em] font-medium transition-all duration-300 w-full md:w-auto text-center"
+              className="py-4 px-8 text-[11px] uppercase tracking-[0.3em] font-medium transition-all duration-300 w-full md:w-auto text-center cursor-pointer"
               style={{
                 backgroundColor: "#1b1c1a",
                 color: "#fbf9f6",
@@ -103,12 +103,15 @@ const Dashboard = () => {
 
                 return (
                   <div
+                    onClick={() => {
+                      navigate(`/seller/product/${product._id}`);
+                    }}
                     key={product._id}
                     className="group cursor-pointer flex flex-col"
                   >
                     {/* Image Container */}
                     <div
-                      className="aspect-[4/5] overflow-hidden mb-6"
+                      className="aspect-4/5 overflow-hidden mb-6"
                       style={{ backgroundColor: "#f5f3f0" }}
                     >
                       <img
