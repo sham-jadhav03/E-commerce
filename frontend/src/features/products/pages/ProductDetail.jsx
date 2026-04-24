@@ -95,7 +95,7 @@ const ProductDetail = () => {
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
-                      className={`flex-shrink-0 w-20 md:w-full aspect-[4/5] overflow-hidden transition-all duration-300 ${selectedImage === idx ? "opacity-100 ring-1 ring-[#C9A96E] ring-offset-2" : "opacity-50 hover:opacity-100"}`}
+                      className={`flex-shrink-0 w-20 md:w-full aspect-4/5 overflow-hidden transition-all duration-300 ${selectedImage === idx ? "opacity-100 ring-1 ring-[#C9A96E] ring-offset-2" : "opacity-50 hover:opacity-100"}`}
                       style={{
                         backgroundColor: "#f5f3f0",
                         "--tw-ring-offset-color": "#fbf9f6",
