@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useProduct } from "../hooks/useProduct";
-import { useNavigate, useParams, Link } from "react-router";
+import { useParams, Link } from "react-router";
 
 const ProductDetail = () => {
   const { productId } = useParams();
   const [selectedImage, setSelectedImage] = useState(0);
   const [product, setProduct] = useState(null);
-  const navigate = useNavigate();
-
   const { handleGetProductById } = useProduct();
 
   const fetchProductDetails = async () => {
-    if(!productId) return;
+    if (!productId) return;
     try {
       const data = await handleGetProductById(productId);
       setProduct(data);
@@ -21,7 +19,8 @@ const ProductDetail = () => {
   };
 
   useEffect(() => {
-    fetchProductDetails(productId);
+     console.log(fetchProductDetails());
+    fetchProductDetails();
   }, [productId]);
 
   if (!product) {
@@ -60,30 +59,6 @@ const ProductDetail = () => {
           fontFamily: "'Inter', sans-serif",
         }}
       >
-        {/* ── Navbar ── */}
-        <nav
-          className="px-8 lg:px-16 xl:px-24 pt-10 pb-6 flex items-center justify-between border-b"
-          style={{ borderColor: "#e4e2df" }}
-        >
-          <Link
-            to="/"
-            className="text-sm font-medium tracking-[0.35em] uppercase hover:opacity-80 transition-opacity"
-            style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              color: "#C9A96E",
-            }}
-          >
-            Snitch.
-          </Link>
-          <button
-            onClick={() => navigate(-1)}
-            className="text-[10px] uppercase tracking-[0.2em] font-medium transition-colors hover:text-[#C9A96E] cursor-pointer"
-            style={{ color: "#7A6E63" }}
-          >
-            Return to Archive
-          </button>
-        </nav>
-
         <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24 pt-12 lg:pt-20">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
             {/* ── LEFT: Image Gallery ── */}
@@ -95,7 +70,7 @@ const ProductDetail = () => {
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
-                      className={`flex-shrink-0 w-20 md:w-full aspect-4/5 overflow-hidden transition-all duration-300 ${selectedImage === idx ? "opacity-100 ring-1 ring-[#C9A96E] ring-offset-2" : "opacity-50 hover:opacity-100"}`}
+                      className={`shrink-0 w-20 md:w-full aspect-4/5 overflow-hidden transition-all duration-300 ${selectedImage === idx ? "opacity-100 ring-1 ring-[#C9A96E] ring-offset-2" : "opacity-50 hover:opacity-100"}`}
                       style={{
                         backgroundColor: "#f5f3f0",
                         "--tw-ring-offset-color": "#fbf9f6",

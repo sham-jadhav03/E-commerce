@@ -11,7 +11,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     handleGetSellerProduct();
-  }, []);
+  }, [handleGetSellerProduct]);
 
   return (
     <>
@@ -100,7 +100,7 @@ const Dashboard = () => {
                   product.images && product.images.length > 0
                     ? product.images[0].url
                     : "/snitch_editorial_warm.png"; // Fallback to our warm editorial
-
+                    
                 return (
                   <div
                     onClick={() => {

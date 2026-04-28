@@ -1,5 +1,5 @@
 import { addItem, getCart } from "../services/cart.api";
-import { addItem as addItemToCart, setItems } from "../state/cart.slice";
+import { setItems } from "../state/cart.slice";
 import { useDispatch } from "react-redux";
 
 export const useCart = () => {

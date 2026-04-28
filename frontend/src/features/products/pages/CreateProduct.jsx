@@ -295,7 +295,7 @@ const CreateProduct = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-linear-to-r from-[#e9c400] to-[#ffd700] text-[#131313] font-bold tracking-wide py-4 px-8 rounded-sm hover:shadow-[0_0_24px_rgba(255,215,0,0.25)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 font-[Inter,sans-serif] text-sm uppercase"
+              className="w-full bg-linear-to-r from-[#e9c400] to-[#ffd700] text-[#131313] font-bold tracking-wide py-4 px-8 rounded-sm hover:shadow-[0_0_24px_rgba(255,215,0,0.25)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 font-[Inter,sans-serif] text-sm uppercase cursor-pointer"
             >
               {isSubmitting ? "Publishing..." : "Publish Listing"}
             </button>

@@ -31,8 +31,7 @@ export const useProduct = () => {
 
   async function handleGetProductById(productId) {
     const data = await getProductById(productId);
-    console.log(data);
-
+    
     return data;
   }
 
