@@ -89,7 +89,7 @@ export const addProductVariants = async (req, res) => {
 
   const files = req.files;
   const images = [];
-  if (files || files.length !== 0) {
+  if (files && files.length > 0) {
     (
       await Promise.all(
         files.map(async (file) => {

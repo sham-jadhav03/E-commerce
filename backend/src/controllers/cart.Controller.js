@@ -50,7 +50,7 @@ export const addToCart = async (req, res) => {
         "items.product": productId,
         "items.variant": variantId,
       },
-      { $inc: { "items.$quantity": quantity } },
+      { $inc: { "items.$.quantity": quantity } },
       { new: true },
     );
 

@@ -7,7 +7,7 @@ const api = axios.create({
 
 export const addItem = async ({ productId, variantId }) => {
   const response = await api.post(`/add/${productId}/${variantId}`, {
-    quatity: 1,
+    quantity: 1,
   });
 
   return response.data;

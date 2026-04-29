@@ -4,7 +4,8 @@ import {
   createProduct,
   getSellerProducts,
   getAllProducts,
-  addProductVariants
+  addProductVariants,
+  getProductDetails
 } from "../controllers/product.controller.js";
 import { validateCreateProduct } from "../validators/product.validator.js";
 import { autheticateSeller } from "../middleware/auth.middleware.js";
@@ -49,7 +50,7 @@ router.get("/", getAllProducts);
  * @description Get product details by ID
  * @access Public
  */
-router.get("/detail/:id", getAllProducts);
+router.get("/detail/:id", getProductDetails);
 
 /**
  * @route POST /api/products/:productId/variants
