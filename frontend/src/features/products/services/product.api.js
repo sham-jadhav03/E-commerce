@@ -1,50 +1,45 @@
 import axios from "axios";
 
-const api = axios.create({
+const productApiInstance = axios.create({
   baseURL: "/api/products",
   withCredentials: true,
-});
+})
 
-export const createProduct = async (formData) => {
-  const response = await api.post("/", formData);
+export async function createProduct(formData) {
+  const response = await productApiInstance.post("/", formData)
 
-  return response.data;
-};
-
-export const getSellerProducts = async () => {
-  const response = await api.get("/seller");
-
-  return response.data;
-};
-
-export const getAllProducts = async () => {
-  const response = await api.get("/");
-
-  return response.data;
-};
-
-export const getProductById = async (productId) => {
-  const response = await api.get(`/detail/${productId}`)
-  return response.data;
+  return response.data
 }
 
-export const addProductVariant = async (productId, newProductVariant) => {
+export async function getSellerProduct() {
+  const response = await productApiInstance.get("/seller")
+  return response.data
+}
 
+export async function getAllProducts() {
+  const response = await productApiInstance.get("/")
+  return response.data
+}
 
-  const formData = new FormData();
+export async function getProductById(productId) {
+  const response = await productApiInstance.get(`/detail/${productId}`)
+  return response.data
+}
 
-  //append variant data 
+export async function addProductVariant(productId, newProductVariant) {
+
+  const formData = new FormData()
+
   newProductVariant.images.forEach((image) => {
-    formData.append("images", image.file)
+    formData.append(`images`, image.file)
   })
 
   formData.append("stock", newProductVariant.stock)
   formData.append("priceAmount", newProductVariant.price)
   formData.append("attributes", JSON.stringify(newProductVariant.attributes))
 
+  const response = await productApiInstance.post(`/${productId}/variants`, formData)
 
-  const response = await api.post(`/${productId}/variants`, formData)
-
-  return response.data;
+  return response.data
 
 }

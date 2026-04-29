@@ -7,11 +7,11 @@ const Home = () => {
   const products = useSelector((state) => state.product.products);
   const navigate = useNavigate()
 
-  const { handleGetAllProduct } = useProduct();
+  const { handleGetAllProducts } = useProduct();
 
   useEffect(() => {
-    handleGetAllProduct();
-  }, [handleGetAllProduct]);
+    handleGetAllProducts();
+  }, [handleGetAllProducts]);
 
   return (
     <>

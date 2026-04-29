@@ -1,46 +1,39 @@
-import { setSellerProducts, setProducts } from "../state/product.slice";
-import {
-  createProduct,
-  getSellerProducts,
-  getAllProducts,
-  getProductById,
-  addProductVariant,
-} from "../services/product.api";
-import { useDispatch } from "react-redux";
+import { createProduct, getSellerProduct, getAllProducts, getProductById, addProductVariant } from "../services/product.api"
+import { useDispatch } from "react-redux"
+import { setSellerProducts, setProducts } from "../state/product.slice"
 
 export const useProduct = () => {
-  const disPatch = useDispatch();
 
-  async function handleCreateProduct(formdata) {
-    const data = await createProduct(formdata);
-    return data.products;
+  const dispatch = useDispatch()
+
+  async function handleCreateProduct(formData) {
+    const data = await createProduct(formData)
+    return data.product
   }
 
   async function handleGetSellerProduct() {
-    const data = await getSellerProducts();
-    disPatch(setSellerProducts(data.products));
-    return data.products;
+    const data = await getSellerProduct()
+    dispatch(setSellerProducts(data.products))
+    return data.products
   }
 
-  async function handleGetAllProduct() {
-    const data = await getAllProducts();
+  async function handleGetAllProducts() {
 
-    disPatch(setProducts(data.products));
-
+    const data = await getAllProducts()
+    dispatch(setProducts(data.products))
   }
 
   async function handleGetProductById(productId) {
-    const data = await getProductById(productId);
-    
-    return data;
+    const data = await getProductById(productId)
+    return data
   }
 
   async function handleAddProductVariant(productId, newProductVariant) {
-
     const data = await addProductVariant(productId, newProductVariant)
 
-    return data.products;
+    return data
   }
 
-  return { handleCreateProduct, handleGetSellerProduct, handleGetAllProduct, handleGetProductById, handleAddProductVariant };
-};
+  return { handleCreateProduct, handleGetSellerProduct, handleGetAllProducts, handleGetProductById, handleAddProductVariant }
+
+}
