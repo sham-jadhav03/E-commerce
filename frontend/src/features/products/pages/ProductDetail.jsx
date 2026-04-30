@@ -269,7 +269,7 @@ const ProductDetail = () => {
                   onClick={() => {
                     handleAddItem({
                       productId: product._id,
-                      variantId: activeVariant._id
+                      variantId: activeVariant?._id
                     })
                   }}
                 >

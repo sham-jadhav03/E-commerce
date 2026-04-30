@@ -4,19 +4,19 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 
 const tokens = {
-    surface: '#fbf9f6',
-    surfaceLow: '#f5f3f0',
-    surfaceLowest: '#ffffff',
-    surfaceHigh: '#eae8e5',
-    surfaceHighest: '#e4e2df',
-    onSurface: '#1b1c1a',
-    onSurfaceVariant: '#4d463a',
-    secondary: '#7A6E63',
-    muted: '#B5ADA3',
-    primary: '#C9A96E',
-    primaryDark: '#745a27',
-    outlineVariant: '#d0c5b5',
-    outline: '#7f7668',
+  surface: '#fbf9f6',
+  surfaceLow: '#f5f3f0',
+  surfaceLowest: '#ffffff',
+  surfaceHigh: '#eae8e5',
+  surfaceHighest: '#e4e2df',
+  onSurface: '#1b1c1a',
+  onSurfaceVariant: '#4d463a',
+  secondary: '#7A6E63',
+  muted: '#B5ADA3',
+  primary: '#C9A96E',
+  primaryDark: '#745a27',
+  outlineVariant: '#d0c5b5',
+  outline: '#7f7668',
 }
 
 const Cart = () => {
@@ -30,49 +30,39 @@ const Cart = () => {
     handleGetCart();
   }, [handleGetCart]);
 
-  const defaultQuantities = useMemo(() => {
-    const obj = {};
-    cartItems?.forEach((item) => {
-      obj[item._id] = item.quantity ?? 1;
-    });
-    return obj;
-  }, [cartItems]);
-
   const changeQty = (id, delta) => {
-    setQuantities((prev) => {
-      const currentQty = prev[id] ?? defaultQuantities[id] ?? 1;
-      return {
-        ...prev,
-        [id]: Math.max(1, currentQty + delta),
-      };
-    });
-  };
+    setQuantities(prev => ({
+      ...prev,
+      [id]: Math.max(1, (prev[id] ?? 1) + delta),
+    }))
+  }
 
   /* ─── Derived totals ─── */
-  const subtotal =
-    cartItems?.reduce((sum, item) => {
-      const qty = quantities[item._id] ?? defaultQuantities[item._id] ?? 1;
-      return sum + (item.price?.amount ?? 0) * qty;
-    }, 0) ?? 0;
+  const subtotal = cartItems?.reduce((sum, item) => {
+    const qty = quantities[item._id] ?? item.quantity ?? 1
+    return sum + (item.price?.amount ?? 0) * qty
+  }, 0) ?? 0
 
-  const freeShippingThreshold = 15000;
-  const shippingFree = subtotal >= freeShippingThreshold;
-  const totalPieces = cartItems?.length ?? 0;
+  const freeShippingThreshold = 15000
+  const shippingFree = subtotal >= freeShippingThreshold
+  const totalPieces = cartItems?.length ?? 0
 
   /* ─── Helpers ─── */
   const getVariantDetails = (product, variantId) => {
-    if (!product?.variants || !variantId) return null;
-    return product.variants.find((v) => v._id === variantId) ?? null;
-  };
+    if (!product?.variants || !variantId) return null
+    return product.variants.find(v => v._id === variantId) ?? null
+  }
 
   const getDisplayImage = (product, variant) => {
-    if (variant?.images?.length) return variant.images[0].url;
-    if (product?.images?.length) return product.images[0].url;
-    return null;
-  };
+    if (variant?.images?.length) return variant.images[0].url
+    if (product?.images?.length) return product.images[0].url
+    return null
+  }
 
-  const formatCurrency = (amount, currency = "INR") =>
-    `${currency} ${Number(amount).toLocaleString("en-IN")}`;
+  const formatCurrency = (amount, currency = 'INR') =>
+    `${currency} ${Number(amount).toLocaleString('en-IN')}`
+
+  console.log(cartItems)
 
   /* ─── Empty state ─── */
   if (!cartItems?.length) {
@@ -276,9 +266,9 @@ const Cart = () => {
                           >
                             {displayPrice
                               ? formatCurrency(
-                                  displayPrice.amount,
-                                  displayPrice.currency,
-                                )
+                                displayPrice.amount,
+                                displayPrice.currency,
+                              )
                               : "—"}
                           </p>
 
@@ -304,7 +294,7 @@ const Cart = () => {
                           >
                             <button
                               id={`qty-dec-${_id}`}
-                              onClick={() => handleDecrementCartItem({productId: _id, variantId})}
+                              onClick={() => handleDecrementCartItem({ productId: _id, variantId })}
                               className="w-9 h-9 flex items-center justify-center text-sm font-light transition-colors hover:opacity-60"
                               style={{
                                 color: tokens.onSurface,
@@ -322,7 +312,7 @@ const Cart = () => {
                             </span>
                             <button
                               id={`qty-inc-${_id}`}
-                              onClick={() => handleIncrementCartItem({productId:  _id, variantId})}
+                              onClick={() => handleIncrementCartItem({ productId: _id, variantId })}
                               className="w-9 h-9 flex items-center justify-center text-sm font-light transition-colors hover:opacity-60"
                               style={{
                                 color: tokens.onSurface,

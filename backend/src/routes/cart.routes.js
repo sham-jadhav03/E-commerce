@@ -3,12 +3,12 @@ import { authenticateUser } from "../middleware/auth.middleware.js";
 import {
   validateAddCart,
   validateIncrementCartItemQuantity,
-  decrementCartItemQuantity
 } from "../validators/cart.validator.js";
 import {
   addToCart,
   getCart,
   incrementCartItemQuantity,
+  decrementCartItemQuantity
 } from "../controllers/cart.Controller.js";
 
 const router = express.Router();
@@ -59,7 +59,7 @@ router.patch(
 router.patch(
   "/quantity/decrement/:productId/:variantId",
   authenticateUser,
-  validateIncrementCartItemQuantity, 
+  validateIncrementCartItemQuantity,
   decrementCartItemQuantity)
 
 export default router;
