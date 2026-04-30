@@ -1,9 +1,17 @@
 import express from "express";
-import { autheticateUser } from "../middleware/auth.middleware.js"
-import { validateAddCart } from "../validators/cart.validator.js"
-import { addToCart, getCart } from "../controllers/cart.Controller.js"
+import { authenticateUser } from "../middleware/auth.middleware.js";
+import {
+  validateAddCart,
+  validateIncrementCartItemQuantity,
+  decrementCartItemQuantity
+} from "../validators/cart.validator.js";
+import {
+  addToCart,
+  getCart,
+  incrementCartItemQuantity,
+} from "../controllers/cart.Controller.js";
 
-const router = express.Router()
+const router = express.Router();
 
 /**
  * @route POST /api/cart/add/:productId/:variantId
@@ -13,14 +21,45 @@ const router = express.Router()
  * @argument variantId - ID of the variant to add
  * @argument quantity - Quantity of the item to add (optional, default: 1)
  */
-router.post("/add/:productId/:variantId", autheticateUser, validateAddCart, addToCart)
+router.post(
+  "/add/:productId/:variantId",
+  authenticateUser,
+  validateAddCart,
+  addToCart,
+);
 
 /**
  * @route GET /api/cart
  * @desc Get user's cart
  * @access Private
  */
-router.get("/", autheticateUser,  getCart)
+router.get("/", authenticateUser, getCart);
 
+/**
+ * @route PATCH /api/cart/quantity/increment/:productId/:variantId
+ * @desc Increment item quantity in cart by one
+ * @access Private
+ * @argument productId - ID of the product to update
+ * @argument variantId - ID of the variant to update
+ */
+router.patch(
+  "/quantity/increment/increment/:productId/:variantId",
+  authenticateUser,
+  validateIncrementCartItemQuantity,
+  incrementCartItemQuantity,
+);
 
-export default router
+/**
+ * @route PATCH /api/cart/quantity/decrement/:productId/:variantId
+ * @desc Decrement item quantity in cart by one
+ * @access Private
+ * @argument productId - ID of the product to update
+ * @argument variantId - ID of the variant to update
+ */
+router.patch(
+  "/quantity/decrement/:productId/:variantId",
+  authenticateUser,
+  validateIncrementCartItemQuantity, 
+  decrementCartItemQuantity)
+
+export default router;

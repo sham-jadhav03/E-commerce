@@ -22,7 +22,7 @@ const tokens = {
 const Cart = () => {
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.items);
-  const { handleGetCart } = useCart();
+  const { handleGetCart, handleIncrementCartItem, handleDecrementCartItem } = useCart();
 
   const [quantities, setQuantities] = useState({});
 
@@ -215,7 +215,7 @@ const Cart = () => {
                     >
                       {/* Product Image */}
                       <div
-                        className="flex-shrink-0 overflow-hidden"
+                        className="shrink-0 overflow-hidden"
                         style={{
                           width: "clamp(100px, 15vw, 160px)",
                           aspectRatio: "4/5",
@@ -304,7 +304,7 @@ const Cart = () => {
                           >
                             <button
                               id={`qty-dec-${_id}`}
-                              onClick={() => changeQty(_id, -1)}
+                              onClick={() => handleDecrementCartItem({productId: _id, variantId})}
                               className="w-9 h-9 flex items-center justify-center text-sm font-light transition-colors hover:opacity-60"
                               style={{
                                 color: tokens.onSurface,
@@ -322,7 +322,7 @@ const Cart = () => {
                             </span>
                             <button
                               id={`qty-inc-${_id}`}
-                              onClick={() => changeQty(_id, 1)}
+                              onClick={() => handleIncrementCartItem({productId:  _id, variantId})}
                               className="w-9 h-9 flex items-center justify-center text-sm font-light transition-colors hover:opacity-60"
                               style={{
                                 color: tokens.onSurface,

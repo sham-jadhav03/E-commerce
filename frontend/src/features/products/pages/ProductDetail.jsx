@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useParams, Link, useNavigate } from 'react-router';
+import { useParams, Link } from 'react-router';
 import { useProduct } from '../hooks/useProduct';
 import { useCart } from '../../cart/hook/useCart';
 
@@ -8,9 +8,11 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState({});
-  const navigate = useNavigate();
   const { handleGetProductById } = useProduct();
   const { handleAddItem } = useCart()
+
+  console.log(handleAddItem);
+  
 
   async function fetchProductDetails() {
     try {
@@ -45,8 +47,7 @@ const ProductDetail = () => {
     });
   }, [product, selectedAttributes]);
 
-
-  console.log({ product, activeVariant })
+  // console.log({ product, activeVariant })
 
   const availableAttributes = useMemo(() => {
     if (!product?.variants) return {};
@@ -102,7 +103,7 @@ const ProductDetail = () => {
     );
   }
 
-  console.log(product)
+  // console.log(product)
 
   // Fallbacks
   const displayImages = (activeVariant?.images && activeVariant.images.length > 0)
@@ -134,12 +135,12 @@ const ProductDetail = () => {
 
               {/* Thumbnails (Vertical on Desktop, Horizontal on Mobile) */}
               {displayImages.length > 1 && (
-                <div className="flex flex-row md:flex-col gap-4 overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 scrollbar-hide w-full md:w-20 lg:w-24 flex-shrink-0 md:max-h-[calc(100vh-200px)]">
+                <div className="flex flex-row md:flex-col gap-4 overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 scrollbar-hide w-full md:w-20 lg:w-24 shrink-0 md:max-h-[calc(100vh-200px)]">
                   {displayImages.map((img, idx) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
-                      className={`flex-shrink-0 w-20 md:w-full aspect-[4/5] overflow-hidden transition-all duration-300 ${selectedImage === idx ? 'opacity-100 ring-1 ring-[#C9A96E] ring-offset-2' : 'opacity-50 hover:opacity-100'}`}
+                      className={`shrink-0 w-20 md:w-full aspect-4/5 overflow-hidden transition-all duration-300 ${selectedImage === idx ? 'opacity-100 ring-1 ring-[#C9A96E] ring-offset-2' : 'opacity-50 hover:opacity-100'}`}
                       style={{ backgroundColor: '#f5f3f0', '--tw-ring-offset-color': '#fbf9f6' }}
                     >
                       <img
@@ -162,7 +163,7 @@ const ProductDetail = () => {
                   <>
                     <button
                       onClick={() => setSelectedImage(prev => prev === 0 ? displayImages.length - 1 : prev - 1)}
-                      className="absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 border"
+                      className="absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 border cursor-pointer"
                       style={{ backgroundColor: 'rgba(251,249,246,0.8)', borderColor: '#e4e2df', color: '#1b1c1a' }}
                       onMouseEnter={e => e.currentTarget.style.backgroundColor = '#fbf9f6'}
                       onMouseLeave={e => e.currentTarget.style.backgroundColor = 'rgba(251,249,246,0.8)'}
@@ -172,7 +173,7 @@ const ProductDetail = () => {
                     </button>
                     <button
                       onClick={() => setSelectedImage(prev => prev === displayImages.length - 1 ? 0 : prev + 1)}
-                      className="absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 border"
+                      className="absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 border cursor-pointer"
                       style={{ backgroundColor: 'rgba(251,249,246,0.8)', borderColor: '#e4e2df', color: '#1b1c1a' }}
                       onMouseEnter={e => e.currentTarget.style.backgroundColor = '#fbf9f6'}
                       onMouseLeave={e => e.currentTarget.style.backgroundColor = 'rgba(251,249,246,0.8)'}
@@ -251,7 +252,7 @@ const ProductDetail = () => {
               {/* Actions */}
               <div className="flex flex-col gap-4 mt-auto">
                 <button
-                  className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300"
+                  className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300 cursor-pointer"
                   style={{
                     backgroundColor: '#1b1c1a',
                     color: '#fbf9f6',
@@ -276,7 +277,7 @@ const ProductDetail = () => {
                 </button>
 
                 <button
-                  className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300 border"
+                  className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300 border cursor-pointer"
                   style={{
                     backgroundColor: 'transparent',
                     borderColor: '#d0c5b5',

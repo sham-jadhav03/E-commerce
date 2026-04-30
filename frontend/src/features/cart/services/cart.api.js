@@ -18,3 +18,15 @@ export const getCart = async () => {
 
   return response.data;
 };
+
+export const incrementItemCartApi = async ({productId, variantId}) => {
+  const response = await api.patch(`/quantity/increment/${productId}/${variantId}`)
+
+  return response.data;
+}
+
+export const decrementItemCartApi = async ({productId, variantId}) => {
+  const response = await api.patch(`/quantity/decrement/${productId}/${variantId}`)
+
+  return response.data;
+}

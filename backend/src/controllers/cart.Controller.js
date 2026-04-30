@@ -12,7 +12,7 @@ export const addToCart = async (req, res) => {
   });
 
   if (!product) {
-    return res.status(400).json({
+    return res.status(404).json({
       message: "productId and variantId not found.",
       success: false,
     });
@@ -99,3 +99,113 @@ export const getCart = async (req, res) => {
     cart,
   });
 };
+
+export const incrementCartItemQuantity = async (req, res) => {
+  const { productId, variantId } = req.params;
+
+  const product = await productModel.findOne({
+    _id: productId,
+    "variants._id": variantId,
+  });
+
+  if (!product) {
+    return res.status(404).json({
+      message: "productId and variandId not found.",
+      success: false,
+    });
+  }
+
+  const cart = await cartModel.findOne({ user: req.user._id });
+
+  if (!cart) {
+    return res.status(400).json({
+      message: "Cart not found.",
+      success: false,
+    });
+  }
+
+  const stock = await stockOfVariant(productId, variantId);
+
+  const itemQuantityInCart =
+    cart.items.find(
+      (item) =>
+        item.product.toString() === productId &&
+        item.variant?.toString === variantId,
+    )?.quantity || 0;
+
+  if (itemQuantityInCart + 1 > stock) {
+    res.status(400).json({
+      message: `Only ${stock} items left in stock and you already have ${itemQuantityInCart} items in your cart.`,
+      success: false,
+    });
+  }
+
+  await cartModel.findByIdAndUpdate(
+    {
+      user: req.user._id,
+      "items.product": productId,
+      "items.variant": variantId,
+    },
+    { $inc: { "items.$.quantity": 1 } },
+    { new: true },
+  );
+
+  return res.status(200).json({
+    message: "Cart item quantity incremented successfully",
+    success: true,
+  });
+};
+
+export const decrementCartItemQuantity = async (req, res) => {
+  const { productId, variantId } = req.params;
+
+  const product = await productModel.findOne({
+    _id: productId,
+    "variants._id": variantId
+  })
+
+  if (!product) {
+    return res.status(404).json({
+      message: "productId and variantId not found.",
+      success: false,
+    })
+  }
+
+  const cart = await cartModel.findOne({ user: req.user._id })
+
+  if (!cart) {
+    return res.status(400).json({
+      message: "Cart not found.",
+      success: false
+    })
+  }
+
+  const stock = await stockOfVariant(productId, variantId)
+
+  const itemQuantityInCart = cart.items.find(
+    (item) => item.product.toString() === productId &&
+      item.variant?.toString() === variantId
+  )?.quantity || 0
+
+  if (itemQuantityInCart - 1 < 0) {
+    return res.status(400).json({
+      message: "Quantity cannot be negative.",
+      success: false
+    })
+  }
+
+  await cartModel.findByIdAndUpdate(
+    {
+      user: req.user._id,
+      "items.product": productId,
+      "items.variant": variantId
+    },
+    { $inc: { "items.$.quantity": -1 } },
+    { new: true }
+  )
+
+  return res.status(200).json({
+    message: "Cart item quantity decremented successfully",
+    success: true
+  })
+}

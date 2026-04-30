@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { config } from "../config/config.js";
 import userModel from "../models/user.model.js";
 
-export const autheticateUser = async (req, res, next) => {
+export const authenticateUser = async (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
@@ -32,7 +32,7 @@ export const autheticateUser = async (req, res, next) => {
   }
 };
 
-export const autheticateSeller = async (req, res, next) => {
+export const authenticateSeller = async (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
@@ -67,3 +67,6 @@ export const autheticateSeller = async (req, res, next) => {
     });
   }
 };
+
+export const autheticateUser = authenticateUser;
+export const autheticateSeller = authenticateSeller;
