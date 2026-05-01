@@ -104,12 +104,12 @@ export const getCart = async (req, res) => {
       },
       { $unwind: { path: "$items.product" } },
       {
-        $unwind: { path: "items.product.variants" },
+        $unwind: { path: "$items.product.variants" },
       },
       {
         $match: {
           $expr: {
-            $eq: ["$items.variant", "items.product.variants._id"],
+            $eq: ["$items.variant", "$items.product.variants._id"],
           },
         },
       },
@@ -119,7 +119,7 @@ export const getCart = async (req, res) => {
             price: {
               $multiply: [
                 "$items.quantity",
-                "items.product.variants.price.amount",
+                "$items.product.variants.price.amount",
               ],
             },
             currency: "$items.product.variants.price.currency",
@@ -180,7 +180,7 @@ export const incrementCartItemQuantity = async (req, res) => {
     cart.items.find(
       (item) =>
         item.product.toString() === productId &&
-        item.variant?.toString === variantId,
+        item.variant?.toString() === variantId,
     )?.quantity || 0;
 
   if (itemQuantityInCart + 1 > stock) {
@@ -190,7 +190,7 @@ export const incrementCartItemQuantity = async (req, res) => {
     });
   }
 
-  await cartModel.findByIdAndUpdate(
+  await cartModel.findOneAndUpdate(
     {
       user: req.user._id,
       "items.product": productId,
@@ -246,7 +246,7 @@ export const decrementCartItemQuantity = async (req, res) => {
     });
   }
 
-  await cartModel.findByIdAndUpdate(
+  await cartModel.findOneAndUpdate(
     {
       user: req.user._id,
       "items.product": productId,

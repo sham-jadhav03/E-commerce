@@ -267,10 +267,20 @@ const ProductDetail = () => {
                     e.currentTarget.style.color = '#fbf9f6';
                   }}
                   onClick={() => {
-                    handleAddItem({
-                      productId: product._id,
-                      variantId: activeVariant?._id
-                    })
+                    const variantId = activeVariant?._id || product?.variants?.[0]?._id;
+                    if (variantId) {
+                      handleAddItem({
+                        productId: product._id,
+                        variantId: variantId
+                      }).then(() => {
+                        alert("Product added to cart!");
+                      }).catch((err) => {
+                        alert("Failed to add to cart: " + (err.response?.data?.message || err.message));
+                      });
+                    } else {
+                      alert("No variant available to add to cart. Please select attributes or check stock.");
+                      console.error("No variant available to add to cart");
+                    }
                   }}
                 >
                   Add to Cart

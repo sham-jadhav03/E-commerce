@@ -1,5 +1,14 @@
-import { addItem, getCart, incrementItemCartApi, decrementItemCartApi } from "../services/cart.api";
-import { incrementItemCart, setItems, decrementItemCart } from "../state/cart.slice";
+import {
+  addItem,
+  getCart,
+  incrementItemCartApi,
+  decrementItemCartApi,
+} from "../services/cart.api";
+import {
+  incrementItemCart,
+  setCart,
+  decrementItemCart,
+} from "../state/cart.slice";
 import { useDispatch } from "react-redux";
 
 export const useCart = () => {
@@ -13,19 +22,37 @@ export const useCart = () => {
 
   async function handleGetCart() {
     const data = await getCart();
-    dispatch(setItems(data.cart.items));
+    dispatch(setCart(data.cart));
   }
 
   async function handleIncrementCartItem({ productId, variantId }) {
-    const data = await incrementItemCartApi({ productId, variantId });
-    dispatch(incrementItemCart(data.cart.items));
+    try {
+      const data = await incrementItemCartApi({ productId, variantId });
+      if (data.success) {
+        dispatch(incrementItemCart({ productId, variantId }));
+      }
+    } catch (error) {
+      console.error("Increment error:", error.response?.data || error.message);
+      throw error;
+    }
   }
 
-  async function handleDecrementCartItem({productId, variantId}) {
-    const data = await decrementItemCartApi({productId, variantId})
-    dispatch(decrementItemCart(data.cart.items));
-    
+  async function handleDecrementCartItem({ productId, variantId }) {
+    try {
+      const data = await decrementItemCartApi({ productId, variantId });
+      if (data.success) {
+        dispatch(decrementItemCart({ productId, variantId }));
+      }
+    } catch (error) {
+      console.error("Decrement error:", error.response?.data || error.message);
+      throw error;
+    }
   }
 
-  return { handleAddItem, handleGetCart, handleIncrementCartItem, handleDecrementCartItem };
+  return {
+    handleAddItem,
+    handleGetCart,
+    handleIncrementCartItem,
+    handleDecrementCartItem,
+  };
 };

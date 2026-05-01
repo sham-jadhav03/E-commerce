@@ -43,7 +43,7 @@ router.get("/", authenticateUser, getCart);
  * @argument variantId - ID of the variant to update
  */
 router.patch(
-  "/quantity/increment/increment/:productId/:variantId",
+  "/quantity/increment/:productId/:variantId",
   authenticateUser,
   validateIncrementCartItemQuantity,
   incrementCartItemQuantity,
