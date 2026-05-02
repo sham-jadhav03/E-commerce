@@ -19,14 +19,38 @@ export const getCart = async () => {
   return response.data;
 };
 
-export const incrementItemCartApi = async ({productId, variantId}) => {
-  const response = await api.patch(`/quantity/increment/${productId}/${variantId}`)
+export const incrementItemCartApi = async ({ productId, variantId }) => {
+  const response = await api.patch(
+    `/quantity/increment/${productId}/${variantId}`,
+  );
 
   return response.data;
-}
+};
 
-export const decrementItemCartApi = async ({productId, variantId}) => {
-  const response = await api.patch(`/quantity/decrement/${productId}/${variantId}`)
+export const decrementItemCartApi = async ({ productId, variantId }) => {
+  const response = await api.patch(
+    `/quantity/decrement/${productId}/${variantId}`,
+  );
 
   return response.data;
-}
+};
+
+export const createOrder = async () => {
+  const response = await api.post("/payment/create/order");
+
+  return response.data;
+};
+
+export const verifyOrder = async ({
+  razorpay_order_id,
+  razorpay_payment_id,
+  razorpay_signature,
+}) => {
+  const response = await api.post("/payment/verify/order", {
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
+  });
+
+  return response.data;
+};

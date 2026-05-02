@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useCart } from "../hook/useCart";
 import { Link, useNavigate } from "react-router";
+import { useRazorpay } from "react-razorpay";
 
 /* ─── Inline styles & tokens matching the "Avenue Montaigne" design system ─── */
 const tokens = {
@@ -22,9 +23,16 @@ const tokens = {
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-  const { handleGetCart, handleIncrementCartItem, handleDecrementCartItem } = useCart();
+  const {
+    handleGetCart,
+    handleIncrementCartItem,
+    handleDecrementCartItem,
+    handleCreateOrder,
+    handleVerifyOrder,
+  } = useCart();
+  const { error, isLoading, Razorpay } = useRazorpay();
   const navigate = useNavigate();
-
+  const user = useSelector((state) => state.user);
 
   /* Local quantity state — key: cartItem._id, value: number */
   const [quantities, setQuantities] = useState({});
@@ -32,7 +40,6 @@ const Cart = () => {
   useEffect(() => {
     handleGetCart();
   }, []);
-
 
   const changeQty = (id, delta) => {
     setQuantities((prev) => ({
@@ -57,6 +64,38 @@ const Cart = () => {
 
   const formatCurrency = (amount, currency = "INR") =>
     `${currency} ${Number(amount).toLocaleString("en-IN")}`;
+
+  const handleCheckOut = async () => {
+    const order = await handleCreateOrder();
+    console.log(order);
+
+    const options = {
+      key: "rzp_test_SkXuUAcPzWEzJX",
+      amount: order.amount, // Amount in paise
+      currency: order.currency,
+      name: "Snitch",
+      description: "Test Transaction",
+      order_id: order._id, // Generate order_id on server
+      handler: async (response) => {
+        const isValid = await handleVerifyOrder(response);
+
+        if (isValid) {
+          navigate(`/order-success?order_id=${response?.razorpay_order_id}`);
+        }
+      },
+      prefill: {
+        name: user?.fullName,
+        email: user?.email,
+        contact: user?.contact,
+      },
+      theme: {
+        color: tokens.primary,
+      },
+    };
+
+    const razorpayInstance = new Razorpay(options);
+    razorpayInstance.open();
+  };
 
   /* ─── Empty state ─── */
   if (!cart?.items?.length) {
@@ -184,15 +223,17 @@ const Cart = () => {
               <div className="flex flex-col gap-6">
                 {cart.items.map((item, index) => {
                   const { product, variant, price } = item;
-                  
+
                   if (!product) return null;
 
-                  const variantId = typeof variant === 'object' ? variant?._id : variant;
+                  const variantId =
+                    typeof variant === "object" ? variant?._id : variant;
                   const _id = product._id;
 
                   const variantDetail = getVariantDetails(product, variantId);
                   const imageUrl = getDisplayImage(product, variantDetail);
-                  const displayPrice = price ?? variantDetail?.price ?? product?.price;
+                  const displayPrice =
+                    price ?? variantDetail?.price ?? product?.price;
                   const qty = quantities[_id] ?? item.quantity ?? 1;
                   const attributes = variantDetail?.attributes ?? {};
                   const stock = variantDetail?.stock;
@@ -267,12 +308,12 @@ const Cart = () => {
                           >
                             {displayPrice?.amount !== undefined
                               ? formatCurrency(
-                                displayPrice.amount,
-                                displayPrice.currency,
-                              )
+                                  displayPrice.amount,
+                                  displayPrice.currency,
+                                )
                               : displayPrice && typeof displayPrice === "number"
-                              ? formatCurrency(displayPrice)
-                              : "—"}
+                                ? formatCurrency(displayPrice)
+                                : "—"}
                           </p>
 
                           {/* Stock */}
@@ -284,35 +325,37 @@ const Cart = () => {
                               {stock > 0 ? `${stock} in stock` : "Out of stock"}
                             </p>
                           )}
-                          
-                          {displayPrice?.amount !== undefined && variantPrice?.amount !== undefined && displayPrice.amount !== variantPrice.amount && (
-                            <>
-                              {displayPrice.amount > variantPrice.amount ? (
-                                <p className="text-[10px] uppercase tracking-[0.15em] mb-4 text-green-800 font-bold">
-                                  {" "}
-                                  you will get this at{" "}
-                                  {formatCurrency(
-                                    variantPrice.amount,
-                                    variantPrice.currency,
-                                  )}{" "}
-                                  save{" "}
-                                  {Math.abs(
-                                    variantPrice.amount - displayPrice.amount,
-                                  )}
-                                  .{" "}
-                                </p>
-                              ) : (
-                                <p className="text-[10px] uppercase tracking-[0.15em] mb-4 text-red-600 font-bold">
-                                  {" "}
-                                  Warning this product will cost you{" "}
-                                  {Math.abs(
-                                    variantPrice.amount - displayPrice.amount,
-                                  )}{" "}
-                                  more.{" "}
-                                </p>
-                              )}
-                            </>
-                          )}
+
+                          {displayPrice?.amount !== undefined &&
+                            variantPrice?.amount !== undefined &&
+                            displayPrice.amount !== variantPrice.amount && (
+                              <>
+                                {displayPrice.amount > variantPrice.amount ? (
+                                  <p className="text-[10px] uppercase tracking-[0.15em] mb-4 text-green-800 font-bold">
+                                    {" "}
+                                    you will get this at{" "}
+                                    {formatCurrency(
+                                      variantPrice.amount,
+                                      variantPrice.currency,
+                                    )}{" "}
+                                    save{" "}
+                                    {Math.abs(
+                                      variantPrice.amount - displayPrice.amount,
+                                    )}
+                                    .{" "}
+                                  </p>
+                                ) : (
+                                  <p className="text-[10px] uppercase tracking-[0.15em] mb-4 text-red-600 font-bold">
+                                    {" "}
+                                    Warning this product will cost you{" "}
+                                    {Math.abs(
+                                      variantPrice.amount - displayPrice.amount,
+                                    )}{" "}
+                                    more.{" "}
+                                  </p>
+                                )}
+                              </>
+                            )}
                         </div>
 
                         {/* Bottom Row: Quantity + Remove */}
@@ -326,10 +369,11 @@ const Cart = () => {
                           >
                             <button
                               id={`qty-dec-${_id}`}
-                              onClick={() => handleDecrementCartItem({
-                                productId: product._id,
-                                variantId
-                              })
+                              onClick={() =>
+                                handleDecrementCartItem({
+                                  productId: product._id,
+                                  variantId,
+                                })
                               }
                               className="w-9 h-9 flex items-center justify-center text-sm font-light transition-colors hover:opacity-60 cursor-pointer"
                               style={{
@@ -538,6 +582,7 @@ const Cart = () => {
                     e.currentTarget.style.backgroundColor = tokens.onSurface;
                     e.currentTarget.style.color = tokens.surface;
                   }}
+                  onClick={handleCheckOut}
                 >
                   Proceed to Checkout
                 </button>

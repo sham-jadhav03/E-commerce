@@ -3,6 +3,8 @@ import {
   getCart,
   incrementItemCartApi,
   decrementItemCartApi,
+  createOrder,
+  verifyOrder,
 } from "../services/cart.api";
 import {
   incrementItemCart,
@@ -49,10 +51,32 @@ export const useCart = () => {
     }
   }
 
+  async function handleCreateOrder() {
+    const data = await createOrder();
+
+    return data.order;
+  }
+
+  async function handleVerifyOrder({
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
+  }) {
+    const data = await verifyOrder({
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+    });
+
+    return data.order;
+  }
+
   return {
     handleAddItem,
     handleGetCart,
     handleIncrementCartItem,
     handleDecrementCartItem,
+    handleCreateOrder,
+    handleVerifyOrder,
   };
 };

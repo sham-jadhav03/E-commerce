@@ -10,6 +10,7 @@ import {
   incrementCartItemQuantity,
   decrementCartItemQuantity,
   createOrderController,
+  verifyOrderController
 } from "../controllers/cart.Controller.js";
 
 const router = express.Router();
@@ -66,7 +67,16 @@ router.patch(
 
 /**
  * @route POST /api/cart/payment/create/order
+ * @desc payment create with order
+ * @access Private
  */
 router.post("/payment/create/order", authenticateUser, createOrderController);
+
+/**
+ * @route POST /api/cart/payment/verify/order
+ * @desc  payment verify across every endpoints
+ * @access Private
+ */
+router.post("/payment/verify/order", authenticateUser, verifyOrderController)
 
 export default router;
