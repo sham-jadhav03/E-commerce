@@ -8,7 +8,8 @@ import {
   addToCart,
   getCart,
   incrementCartItemQuantity,
-  decrementCartItemQuantity
+  decrementCartItemQuantity,
+  createOrderController,
 } from "../controllers/cart.Controller.js";
 
 const router = express.Router();
@@ -60,6 +61,12 @@ router.patch(
   "/quantity/decrement/:productId/:variantId",
   authenticateUser,
   validateIncrementCartItemQuantity,
-  decrementCartItemQuantity)
+  decrementCartItemQuantity,
+);
+
+/**
+ * @route POST /api/cart/payment/create/order
+ */
+router.post("/payment/create/order", authenticateUser, createOrderController);
 
 export default router;
