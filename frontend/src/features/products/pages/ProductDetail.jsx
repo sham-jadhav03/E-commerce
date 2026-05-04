@@ -11,9 +11,6 @@ const ProductDetail = () => {
   const { handleGetProductById } = useProduct();
   const { handleAddItem } = useCart()
 
-  console.log(handleAddItem);
-  
-
   async function fetchProductDetails() {
     try {
       const data = await handleGetProductById(productId);
@@ -46,8 +43,6 @@ const ProductDetail = () => {
       return vKeys.length === sKeys.length && isMatch;
     });
   }, [product, selectedAttributes]);
-
-  // console.log({ product, activeVariant })
 
   const availableAttributes = useMemo(() => {
     if (!product?.variants) return {};
@@ -102,8 +97,6 @@ const ProductDetail = () => {
       </div>
     );
   }
-
-  // console.log(product)
 
   // Fallbacks
   const displayImages = (activeVariant?.images && activeVariant.images.length > 0)

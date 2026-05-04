@@ -7,6 +7,7 @@ import { createOrder } from "../services/payment.services.js";
 import paymentModel from "../models/payment.model.js";
 import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils.js";
 import { config } from "../config/config.js";
+import { deductStockForOrderItems } from "../dao/stock.dao.js";
 
 export const addToCart = async (req, res) => {
   const { productId, variantId } = req.params;
@@ -278,13 +279,10 @@ export const verifyOrderController = async (req, res) => {
   });
 
   if (!payment) {
-    return (
-      res,
-      status(400).json({
-        message: "Payment not found.",
-        success: false,
-      })
-    );
+    return res.status(400).json({
+      message: "Payment not found.",
+      success: false,
+    });
   }
 
   const isPaymentValid = validatePaymentVerification(
@@ -306,12 +304,25 @@ export const verifyOrderController = async (req, res) => {
     });
   }
 
+  const isStockDeducted = await deductStockForOrderItems(payment.orderItems);
+
+  if (!isStockDeducted) {
+    return res.status(409).json({
+      message: "Not enough stock available for one or more items.",
+      success: false,
+    });
+  }
+
   payment.status = "paid";
 
   payment.razorpay.paymentId = razorpay_payment_id;
   payment.razorpay.signature = razorpay_signature;
 
   await payment.save();
+  await cartModel.findOneAndUpdate(
+    { user: payment.user },
+    { $set: { items: [] } },
+  );
 
   return res.status(200).json({
     message: "Payment verified successfully.",
